@@ -15,7 +15,7 @@ public class player : MonoBehaviour
     void Update()
     {
         Pulo();
-        print(velocidade_movimento);
+        ScaleSprit();
     }
     void FixedUpdate()
     {
@@ -36,18 +36,24 @@ public class player : MonoBehaviour
             //ForceMode2D.Impulse, efeito de impulso
         }
     }
+    void ScaleSprit(){
+        if(Input.GetAxis("Horizontal") > 0){
+            transform.localScale = new Vector3(1, 1, 1); // personagem indo para a direita
+        }
+        else if(Input.GetAxis("Horizontal") < 0){
+            transform.localScale = new Vector3(-1, 1, 1); // personagem indo para a esquerda
+        }
+    }
     void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Chao"){
             colidir_chao = true;
-            velocidade_movimento = velocidade_movimento / 0.7f; //Normalizar velocidade de movimento
         }
     }
     void OnCollisionExit2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Chao"){
             colidir_chao = false;
-            velocidade_movimento = velocidade_movimento * 0.7f; //Limitar velocidade de movimento
         }
     }
 }
