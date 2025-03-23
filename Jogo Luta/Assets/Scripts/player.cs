@@ -8,6 +8,8 @@ public class player : MonoBehaviour
     public float forca_pulo;
     private Rigidbody2D rb;
     private bool colidir_chao = false;
+    private bool esta_atacando = false;
+    public Animator animatorComponent;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -16,6 +18,7 @@ public class player : MonoBehaviour
     {
         Pulo();
         ScaleSprit();
+        VerificarAtaque();
     }
     void FixedUpdate()
     {
@@ -27,8 +30,8 @@ public class player : MonoBehaviour
         float input_y = rb.velocity.y;
 
         Vector2 movimentos = new Vector2(input_x, input_y);
-        //transform.position += movimentos * Time.deltaTime * velocidade;
         rb.velocity = movimentos;
+        AnimacaoAndar();
     }
     void Pulo(){
         if(Input.GetButtonDown("Jump") && colidir_chao == true){
@@ -36,12 +39,38 @@ public class player : MonoBehaviour
             //ForceMode2D.Impulse, efeito de impulso
         }
     }
+    void VerificarAtaque()
+    {
+        if (Input.GetKeyDown(KeyCode.P) && !esta_atacando)
+        {
+            StartCoroutine(Ataque());
+        }
+    }
+    IEnumerator Ataque()
+    {
+        esta_atacando = true;
+        animatorComponent.SetBool("ataque-simples", true);
+        animatorComponent.SetBool("andar", false);
+
+        yield return new WaitForSeconds(0.5f);
+
+        esta_atacando = false;
+        animatorComponent.SetBool("ataque-simples", false);
+    }
     void ScaleSprit(){
         if(Input.GetAxis("Horizontal") > 0){
             transform.localScale = new Vector3(1, 1, 1); // personagem indo para a direita
         }
         else if(Input.GetAxis("Horizontal") < 0){
             transform.localScale = new Vector3(-1, 1, 1); // personagem indo para a esquerda
+        }
+    }
+    void AnimacaoAndar(){
+        if(Input.GetAxis("Horizontal") != 0){
+            animatorComponent.SetBool("andar", true);
+        }
+        else{
+            animatorComponent.SetBool("andar", false);
         }
     }
     void OnCollisionEnter2D(Collision2D collision)
