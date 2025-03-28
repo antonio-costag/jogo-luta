@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class player : MonoBehaviour
     private Rigidbody2D rb;
     private bool colidir_chao = false;
     private bool esta_atacando = false;
-    public Animator animatorComponent;
+    public Animator animatorPlayer;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -18,18 +19,28 @@ public class player : MonoBehaviour
     {
         Pulo();
         ScaleSprit();
-        VerificarAtaque();
+        Ataque();
     }
     void FixedUpdate()
     {
-        Movimento(); // Move o jogador baseado na física
+        VerificarMovimento();
+        // Move o jogador baseado na física
+    }
+    void VerificarMovimento(){
+        if(esta_atacando == false){
+            Movimento();
+            //Permite que o jogador se mova enquanto não ataca
+        }
+        else if(esta_atacando == true && colidir_chao == false){
+            Movimento();
+            //Permite que o jogador se mova enquanto ataca no ar
+        }
     }
     void Movimento(){
-        float input_x = Input.GetAxis("Horizontal") * velocidade_movimento * Time.deltaTime;
+        float input_x = Input.GetAxisRaw("Horizontal") * velocidade_movimento * Time.deltaTime;
         //Time.deltaTime deixa suave a movimentação
-        float input_y = rb.velocity.y;
 
-        Vector2 movimentos = new Vector2(input_x, input_y);
+        Vector2 movimentos = new Vector2(input_x, rb.velocity.y);
         rb.velocity = movimentos;
         AnimacaoAndar();
     }
@@ -39,39 +50,44 @@ public class player : MonoBehaviour
             //ForceMode2D.Impulse, efeito de impulso
         }
     }
-    void VerificarAtaque()
+    void Ataque()
     {
-        if (Input.GetKeyDown(KeyCode.P) && !esta_atacando)
+        if (Input.GetMouseButtonDown(0) && esta_atacando == false)
         {
-            StartCoroutine(Ataque());
+            esta_atacando = true;
+            animatorPlayer.SetBool("ataque_simples", true);
+            animatorPlayer.SetBool("andar", false);
+            //Iniciando a animação de ataque
+
+            if(colidir_chao == true){
+                rb.velocity = Vector2.zero;
+                //Parando o movimento do personagem enquanto ataca no chao
+            }
         }
     }
-    IEnumerator Ataque()
-    {
-        esta_atacando = true;
-        animatorComponent.SetBool("ataque-simples", true);
-        animatorComponent.SetBool("andar", false);
-
-        yield return new WaitForSeconds(0.5f);
-
+    void EncerrarAtaque(){
+        animatorPlayer.SetBool("ataque_simples", false);
         esta_atacando = false;
-        animatorComponent.SetBool("ataque-simples", false);
+        //Interrompendo a animação de ataque
     }
     void ScaleSprit(){
-        if(Input.GetAxis("Horizontal") > 0){
+        if(esta_atacando == false){
+            if(Input.GetAxisRaw("Horizontal") > 0){
             transform.localScale = new Vector3(1, 1, 1); // personagem indo para a direita
-        }
-        else if(Input.GetAxis("Horizontal") < 0){
-            transform.localScale = new Vector3(-1, 1, 1); // personagem indo para a esquerda
+            }
+            else if(Input.GetAxisRaw("Horizontal") < 0){
+                transform.localScale = new Vector3(-1, 1, 1); // personagem indo para a esquerda
+            }
         }
     }
     void AnimacaoAndar(){
-        if(Input.GetAxis("Horizontal") != 0){
-            animatorComponent.SetBool("andar", true);
+        if(Input.GetAxisRaw("Horizontal") != 0){
+            animatorPlayer.SetBool("andar", true);
         }
         else{
-            animatorComponent.SetBool("andar", false);
+            animatorPlayer.SetBool("andar", false);
         }
+        //Se o jogador estiver se movendo, a animação de andar é ativada
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -85,4 +101,5 @@ public class player : MonoBehaviour
             colidir_chao = false;
         }
     }
+    //Verifica se o jogador está colidindo com o chão
 }

@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: player-andando
+  m_Name: Player_andar
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,13 +21,13 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -1107660852, guid: 2e0e729bd9572eb448c19a1b3ecb925f, type: 3}
+      value: {fileID: 840329752, guid: 1b1d90b2539a6444988951c3c5a88d70, type: 3}
     - time: 0.016666668
-      value: {fileID: 686050074, guid: 2e0e729bd9572eb448c19a1b3ecb925f, type: 3}
+      value: {fileID: 1179996209, guid: 1b1d90b2539a6444988951c3c5a88d70, type: 3}
     - time: 0.033333335
-      value: {fileID: 867910467, guid: 2e0e729bd9572eb448c19a1b3ecb925f, type: 3}
+      value: {fileID: 1839237438, guid: 1b1d90b2539a6444988951c3c5a88d70, type: 3}
     - time: 0.05
-      value: {fileID: 222075811, guid: 2e0e729bd9572eb448c19a1b3ecb925f, type: 3}
+      value: {fileID: -1975926385, guid: 1b1d90b2539a6444988951c3c5a88d70, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -50,10 +50,10 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -1107660852, guid: 2e0e729bd9572eb448c19a1b3ecb925f, type: 3}
-    - {fileID: 686050074, guid: 2e0e729bd9572eb448c19a1b3ecb925f, type: 3}
-    - {fileID: 867910467, guid: 2e0e729bd9572eb448c19a1b3ecb925f, type: 3}
-    - {fileID: 222075811, guid: 2e0e729bd9572eb448c19a1b3ecb925f, type: 3}
+    - {fileID: 840329752, guid: 1b1d90b2539a6444988951c3c5a88d70, type: 3}
+    - {fileID: 1179996209, guid: 1b1d90b2539a6444988951c3c5a88d70, type: 3}
+    - {fileID: 1839237438, guid: 1b1d90b2539a6444988951c3c5a88d70, type: 3}
+    - {fileID: -1975926385, guid: 1b1d90b2539a6444988951c3c5a88d70, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
