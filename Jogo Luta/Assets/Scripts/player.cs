@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -11,9 +13,11 @@ public class Player : MonoBehaviour
     private bool colidir_chao = false;
     private bool esta_atacando = false;
     public Animator animatorPlayer;
+    private Inimigo inimigoScript;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        inimigoScript = GameObject.FindGameObjectWithTag("Inimigo").GetComponent<Inimigo>();
     }
     void Update()
     {
@@ -70,6 +74,15 @@ public class Player : MonoBehaviour
         esta_atacando = false;
         //Interrompendo a animação de ataque
     }
+    bool DanoInimigo(){
+        //Verifica se o Inimigo pode levar dano
+        if(GameObject.FindGameObjectWithTag("Espada").activeSelf){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
     void ScaleSprit(){
         if(esta_atacando == false){
             if(Input.GetAxisRaw("Horizontal") > 0){
@@ -94,12 +107,17 @@ public class Player : MonoBehaviour
         if(collision.gameObject.tag == "Chao"){
             colidir_chao = true;
         }
+        else if(collision.gameObject.tag == "Inimigo"){
+            if(DanoInimigo()){
+                inimigoScript.DestruirInimigo();
+            }
+        }
     }
     void OnCollisionExit2D(Collision2D collision)
     {
+        //Verifica se o jogador está colidindo com o chão
         if(collision.gameObject.tag == "Chao"){
             colidir_chao = false;
         }
     }
-    //Verifica se o jogador está colidindo com o chão
 }

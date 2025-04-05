@@ -23,9 +23,13 @@ public class Inimigo : MonoBehaviour
         Movimentar();
     }
     void Movimentar(){
+        //Movimentar o inimigo para a esquerda
         if(colidir_chao == true){
             rb.velocity = new Vector2(-1, rb.velocity.y) * velocidade * Time.deltaTime;
         }
+    }
+    public void DestruirInimigo(){
+        Destroy(gameObject);
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
