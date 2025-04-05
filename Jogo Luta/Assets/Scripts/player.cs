@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-        Pulo();
+        //Pulo();
         ScaleSprit();
         Ataque();
     }
