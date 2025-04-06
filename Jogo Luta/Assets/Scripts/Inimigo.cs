@@ -28,6 +28,11 @@ public class Inimigo : MonoBehaviour
             rb.velocity = new Vector2(-1, rb.velocity.y) * velocidade * Time.deltaTime;
         }
     }
+    
+    /// <summary>
+    /// Destruir o inimigo
+    /// <para>Essa função é chamada quando o inimigo colide com o jogador.</para>
+    /// </summary>
     public void DestruirInimigo(){
         Destroy(gameObject);
     }

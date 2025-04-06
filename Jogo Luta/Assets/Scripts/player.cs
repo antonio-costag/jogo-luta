@@ -13,11 +13,9 @@ public class Player : MonoBehaviour
     private bool colidir_chao = false;
     private bool esta_atacando = false;
     public Animator animatorPlayer;
-    private Inimigo inimigoScript;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        inimigoScript = GameObject.FindGameObjectWithTag("Inimigo").GetComponent<Inimigo>();
     }
     void Update()
     {
@@ -83,6 +81,18 @@ public class Player : MonoBehaviour
             return false;
         }
     }
+    void ProcurarInimigoColisao(Collision2D Collision){
+        //Pega o script do gerador de inimigos
+        GeradorInimigos gerador = FindObjectOfType<GeradorInimigos>();
+        //Contains verifica se o objeto colidido é um inimigo gerado
+        if (gerador.ListinimigosGerados.Contains(Collision.gameObject))
+        {
+            Collision2D CollicionInimigo = Collision;
+            if(DanoInimigo()){
+                CollicionInimigo.gameObject.GetComponent<Inimigo>().DestruirInimigo();
+            }
+        }
+    }
     void ScaleSprit(){
         if(esta_atacando == false){
             if(Input.GetAxisRaw("Horizontal") > 0){
@@ -107,11 +117,8 @@ public class Player : MonoBehaviour
         if(collision.gameObject.tag == "Chao"){
             colidir_chao = true;
         }
-        else if(collision.gameObject.tag == "Inimigo"){
-            if(DanoInimigo()){
-                inimigoScript.DestruirInimigo();
-            }
-        }
+        ProcurarInimigoColisao(collision);
+        //Verifica se o jogador colidiu com um inimigoPrefab
     }
     void OnCollisionExit2D(Collision2D collision)
     {
