@@ -7,6 +7,7 @@ TagManager:
   - Chao
   - Espada
   - Inimigo
+  - Fim
   layers:
   - Default
   - TransparentFX

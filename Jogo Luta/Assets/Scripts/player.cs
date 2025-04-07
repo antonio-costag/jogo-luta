@@ -136,7 +136,7 @@ public class Player : MonoBehaviour
         {
             Collider2D CollicionInimigo = Collision;
             if(DanoAoInimigo()){
-                CollicionInimigo.gameObject.GetComponent<Inimigo>().DestruirInimigo();
+                CollicionInimigo.gameObject.GetComponent<Inimigo>().PontuarComInimigo();
             }
         }
     }
