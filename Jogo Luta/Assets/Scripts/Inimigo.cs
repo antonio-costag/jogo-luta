@@ -14,6 +14,9 @@ public class Inimigo : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         geradorScritpt = FindObjectOfType<GeradorInimigos>();
+
+        //Pega o colisor do filho do jogador;
+        //ColliderPlayer = GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
@@ -54,9 +57,9 @@ public class Inimigo : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // Se o inimigo colidir com o jogador ou outro inimigo, ele deve ignorar a colisão
-        if(collision.gameObject.CompareTag("Player") 
-        || collision.gameObject.CompareTag("Inimigo")){
+        // Se o inimigo colidir com outro inimigo, ele deve ignorar a colisão
+        if(collision.gameObject.CompareTag("Inimigo")
+        || collision.gameObject.CompareTag("Player")){
             Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.collider, true);   
         }
 

@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     private bool esta_atacando = false;
     public Animator animatorPlayer;
     private GeradorInimigos geradorScritpt;
+    private bool recuperarDano = false;
 
     /// <summary>
     /// Variaveis de Vida do Jogador
@@ -120,12 +121,21 @@ public class Player : MonoBehaviour
             return false;
         }
     }
+    IEnumerator RecuperarDano()
+    {
+        recuperarDano = true;
+        yield return new WaitForSeconds(1f);
+
+        recuperarDano = false;
+        yield return null;
+    }
 
 
     //GRUPO: METODOS ENVOLVENDO COLISÃO
      void VidaPLyer(Collision2D collision){
         if(collision.gameObject.tag == "Inimigo"){
-            if(vidaAtual >= 0){
+            if(vidaAtual >= 0 && recuperarDano == false){
+                StartCoroutine(RecuperarDano());
                 vidaAtual -= 10;
             }
         }
