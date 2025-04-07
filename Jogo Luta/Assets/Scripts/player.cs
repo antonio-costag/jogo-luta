@@ -13,22 +13,35 @@ public class Player : MonoBehaviour
     private bool colidir_chao = false;
     private bool esta_atacando = false;
     public Animator animatorPlayer;
+    private GeradorInimigos geradorScritpt;
+
+    /// <summary>
+    /// Variaveis de Vida do Jogador
+    /// vidaMax: Vida máxima do jogador
+    /// </summary>
     public int vidaMax;
-    private int vida;
+
+    /// <summary>
+    /// Variaveis de Vida do Jogador
+    /// vidaAtual: Vida atual do jogador
+    /// </summary>
+    public int vidaAtual;
 
 
     //GRUPO: METODOS UNITY
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        vida = vidaMax;
+
+        //pega o Script do Gerador de inimigos pelo tipo
+        geradorScritpt = FindObjectOfType<GeradorInimigos>();
+        vidaAtual = vidaMax;
     }
     void Update()
     {
         //Pulo();
         ScaleSprit();
         Ataque();
-        print(vida);
     }
     void FixedUpdate()
     {
@@ -112,14 +125,14 @@ public class Player : MonoBehaviour
     //GRUPO: METODOS ENVOLVENDO COLISÃO
      void VidaPLyer(Collision2D collision){
         if(collision.gameObject.tag == "Inimigo"){
-            vida -= vidaMax / 10;
+            if(vidaAtual >= 0){
+                vidaAtual -= 10;
+            }
         }
     }
-    void ProcurarInimigoColisao(Collider2D Collision){
-        //Pega o script do gerador de inimigos
-        GeradorInimigos gerador = FindObjectOfType<GeradorInimigos>();
-        //Contains verifica se o objeto colidido é um inimigo gerado
-        if (gerador.ListinimigosGerados.Contains(Collision.gameObject))
+    void ProcurarInimigoMorto(Collider2D Collision){
+        //Contains verifica se o objeto colidido é um inimigo prefab
+        if (geradorScritpt.ListinimigosGerados.Contains(Collision.gameObject))
         {
             Collider2D CollicionInimigo = Collision;
             if(DanoAoInimigo()){
@@ -129,7 +142,7 @@ public class Player : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
-        ProcurarInimigoColisao(collision);
+        ProcurarInimigoMorto(collision);
         //Verifica se a espada colidiu com um inimigoPrefab
     }
     void OnCollisionEnter2D(Collision2D collision)
