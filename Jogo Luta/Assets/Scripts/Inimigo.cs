@@ -42,5 +42,10 @@ public class Inimigo : MonoBehaviour
         {
             colidir_chao = true;
         }
+
+        // Se o inimigo colidir com o jogador, ele deve ignorar a colisão
+        if(collision.gameObject.CompareTag("Player")){
+            Physics2D.IgnoreCollision(GetComponent<Collider2D>(), collision.collider, true);   
+        }
     }
 }

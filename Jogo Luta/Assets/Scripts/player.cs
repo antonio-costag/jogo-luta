@@ -33,9 +33,8 @@ public class Player : MonoBehaviour
             Movimento();
             //Permite que o jogador se mova enquanto não ataca
         }
-        else if(esta_atacando == true && colidir_chao == false){
-            Movimento();
-            //Permite que o jogador se mova enquanto ataca no ar
+        else{
+            rb.velocity = Vector2.zero;
         }
     }
     void Movimento(){
@@ -60,11 +59,6 @@ public class Player : MonoBehaviour
             animatorPlayer.SetBool("ataque_simples", true);
             animatorPlayer.SetBool("andar", false);
             //Iniciando a animação de ataque
-
-            if(colidir_chao == true){
-                rb.velocity = Vector2.zero;
-                //Parando o movimento do personagem enquanto ataca no chao
-            }
         }
     }
     void EncerrarAtaque(){
@@ -81,13 +75,13 @@ public class Player : MonoBehaviour
             return false;
         }
     }
-    void ProcurarInimigoColisao(Collision2D Collision){
+    void ProcurarInimigoColisao(Collider2D Collision){
         //Pega o script do gerador de inimigos
         GeradorInimigos gerador = FindObjectOfType<GeradorInimigos>();
         //Contains verifica se o objeto colidido é um inimigo gerado
         if (gerador.ListinimigosGerados.Contains(Collision.gameObject))
         {
-            Collision2D CollicionInimigo = Collision;
+            Collider2D CollicionInimigo = Collision;
             if(DanoInimigo()){
                 CollicionInimigo.gameObject.GetComponent<Inimigo>().DestruirInimigo();
             }
@@ -112,13 +106,19 @@ public class Player : MonoBehaviour
         }
         //Se o jogador estiver se movendo, a animação de andar é ativada
     }
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        ProcurarInimigoColisao(collision);
+        //Verifica se a espada colidiu com um inimigoPrefab
+    }
     void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.tag == "Chao"){
             colidir_chao = true;
         }
-        ProcurarInimigoColisao(collision);
-        //Verifica se o jogador colidiu com um inimigoPrefab
+        if(collision.gameObject.tag == "Inimigo"){
+            print("dano");
+        }
     }
     void OnCollisionExit2D(Collision2D collision)
     {
