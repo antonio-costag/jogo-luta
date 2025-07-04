@@ -99,7 +99,7 @@ public class Player : MonoBehaviour
     //GRUPO: METODOS ENVOLVENDO COMBATE
     void Ataque()
     {
-        if (Input.GetMouseButtonDown(0) && esta_atacando == false)
+        if (Input.GetButtonDown("Fire1") && esta_atacando == false)
         {
             esta_atacando = true;
             animatorPlayer.SetBool("ataque_simples", true);
